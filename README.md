@@ -5,7 +5,7 @@
 Google accepts two integration protocols for issuing digital credentials into
 Google Wallet: its own Digital Credentials Provisioning API, or OpenID4VCI.
 This package takes the OpenID4VCI route. The protocol lives in
-`openid4vci`; only what is specific to
+[openid4vci](https://github.com/edutap-eu/OpenID4VCI); only what is specific to
 Google lives here.
 
 > **Pre-alpha.** Configuration is implemented, issuance is not.
