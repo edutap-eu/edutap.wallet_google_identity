@@ -41,6 +41,11 @@ jobs:
           repository: edutap-eu/OpenID4VCI
           ref: main
           path: OpenID4VCI
+          # The default job token only reaches the repository it runs in, so a
+          # private dependency needs a token that reaches further. Once
+          # OpenID4VCI is public the fallback works on its own and the secret
+          # can be removed.
+          token: ${{ secrets.DEPENDENCY_READ_TOKEN || github.token }}
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
@@ -62,6 +67,11 @@ jobs:
           repository: edutap-eu/OpenID4VCI
           ref: main
           path: OpenID4VCI
+          # The default job token only reaches the repository it runs in, so a
+          # private dependency needs a token that reaches further. Once
+          # OpenID4VCI is public the fallback works on its own and the secret
+          # can be removed.
+          token: ${{ secrets.DEPENDENCY_READ_TOKEN || github.token }}
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
