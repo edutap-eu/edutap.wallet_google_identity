@@ -26,8 +26,11 @@ Three things survive that question:
 
 ## Installation
 
-`openid4vci` is not on PyPI yet. Inside the eduTAP development setup both
-packages sit side by side and `[tool.uv.sources]` resolves it from there:
+```shell
+pip install edutap.wallet-google-identity
+```
+
+For development:
 
 ```shell
 uv sync --group test

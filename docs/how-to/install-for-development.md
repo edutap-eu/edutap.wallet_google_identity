@@ -1,23 +1,6 @@
 # How to install the package for development
 
-This guide shows you how to get the package running on your machine, including its unreleased dependency.
-
-## Resolve the OpenID4VCI dependency
-
-This package depends on `openid4vci`, which is not published to PyPI yet.
-Inside the eduTAP development setup both packages sit side by side under `uses_libraries/`, and `pyproject.toml` resolves the dependency from there:
-
-```toml
-[tool.uv.sources]
-openid4vci = { path = "../OpenID4VCI", editable = true }
-```
-
-If you check out this package on its own, clone `openid4vci` next to it, or point that path at wherever you keep it.
-
-```{important}
-The `[tool.uv.sources]` section is development metadata.
-It is not part of the published wheel, so it never reaches anyone installing the package from an index.
-```
+This guide shows you how to get the package running on your machine.
 
 ## Install and run the tests
 

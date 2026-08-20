@@ -1,17 +1,19 @@
 # The CI calls the same Make targets as a developer does locally. Repeating the
 # commands here instead would let the two drift, and that only shows up when CI
 # passes something that would have been red on a laptop.
-#
-# Both checkouts live side by side inside the workspace, because pyproject.toml
-# resolves the unpublished openid4vci from a sibling directory and actions/checkout
-# refuses to place a repository outside the workspace. When the dependency is
-# published, the second checkout and the working-directory lines go away.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
+  # Nothing here is locked: uv.lock is git-ignored and every requirement is a
+  # lower bound. A suite that passed last week can fail today with nothing
+  # changed here, and a weekly run is what notices.
+  schedule:
+    - cron: "23 5 * * 1"
+  # Callable, so a release workflow can run *these* checks rather than a copy.
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -34,44 +36,16 @@ jobs:
       UV_PYTHON: ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v5
-        with:
-          path: edutap.wallet_google_identity
-      - uses: actions/checkout@v5
-        with:
-          repository: edutap-eu/OpenID4VCI
-          ref: main
-          path: OpenID4VCI
-          # The default job token only reaches the repository it runs in, so a
-          # private dependency needs a token that reaches further. Once
-          # OpenID4VCI is public the fallback works on its own and the secret
-          # can be removed.
-          token: ${{ secrets.DEPENDENCY_READ_TOKEN || github.token }}
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
       - run: make test-local
-        working-directory: edutap.wallet_google_identity
 
   quality:
     name: Linters, type check and documentation
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: edutap.wallet_google_identity
     steps:
       - uses: actions/checkout@v5
-        with:
-          path: edutap.wallet_google_identity
-      - uses: actions/checkout@v5
-        with:
-          repository: edutap-eu/OpenID4VCI
-          ref: main
-          path: OpenID4VCI
-          # The default job token only reaches the repository it runs in, so a
-          # private dependency needs a token that reaches further. Once
-          # OpenID4VCI is public the fallback works on its own and the secret
-          # can be removed.
-          token: ${{ secrets.DEPENDENCY_READ_TOKEN || github.token }}
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true

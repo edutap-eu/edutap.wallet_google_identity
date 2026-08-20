@@ -21,7 +21,10 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "openid4vci",
+    # A pre-release specifier on purpose: 1.0.0a1 is the first published
+    # version, and naming it is what allows a pre-release to be resolved
+    # at all under PEP 440.
+    "openid4vci>=1.0.0a1",
     "pydantic[email]>=2.0",
     "pydantic-settings",
   ]
@@ -148,9 +151,3 @@ description = "run linters that will help improve the code style"
 skip_install = true
 deps = ["pre-commit"]
 commands = [["pre-commit", "run", "-a"]]
-
-# OpenID4VCI is not on PyPI yet. Inside the eduTAP development setup the two
-# packages sit side by side, so resolve it from there. This section is
-# development-only metadata; it is not part of the published wheel.
-[tool.uv.sources]
-openid4vci = { path = "../OpenID4VCI", editable = true }
